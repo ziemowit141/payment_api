@@ -14,13 +14,13 @@ func NewCreditCardRepository(db *gorm.DB) *CreditCardRepository {
 }
 
 func (ar *CreditCardRepository) SelectCard(ccn string) (*models.CreditCard, error) {
-	acc := new(models.CreditCard)
-	result := ar.db.Preload("Transactions").
+	card := new(models.CreditCard)
+	result := ar.db.Model(card).Preload("Transactions").
 		Preload("Transactions.Captures").
 		Preload("Transactions.Refunds").
-		First(acc, "number = ?", ccn)
+		First(card, "number = ?", ccn)
 
-	return acc, result.Error
+	return card, result.Error
 }
 
 func (ar *CreditCardRepository) DeleteCard(creditCard *models.CreditCard) {
