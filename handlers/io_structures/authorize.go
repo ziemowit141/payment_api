@@ -34,9 +34,12 @@ type AuthorizationResponse struct {
 	Currency string  `json:"currency"`
 }
 
-func (a *AuthorizationResponse) ToJSON(w io.Writer) error {
+func (a *AuthorizationResponse) ToJSON(w io.Writer) {
 	e := json.NewEncoder(w)
-	return e.Encode(a)
+	err := e.Encode(a)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func (a *AuthorizationResponse) FromJSON(data []byte) {

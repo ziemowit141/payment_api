@@ -9,9 +9,12 @@ type VoidRequest struct {
 	Uid string `json:"uid"`
 }
 
-func (a *VoidRequest) FromJSON(r io.Reader) error {
+func (a *VoidRequest) FromJSON(r io.Reader) {
 	e := json.NewDecoder(r)
-	return e.Decode(a)
+	err := e.Decode(a)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func NewVoidRequest(body io.ReadCloser) *VoidRequest {
@@ -26,11 +29,17 @@ type VoidResponse struct {
 	Currency string  `json:"currency"`
 }
 
-func (a *VoidResponse) ToJSON(w io.Writer) error {
+func (a *VoidResponse) ToJSON(w io.Writer) {
 	e := json.NewEncoder(w)
-	return e.Encode(a)
+	err := e.Encode(a)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func (a *VoidResponse) FromJSON(data []byte) {
-	json.Unmarshal(data, a)
+	err := json.Unmarshal(data, a)
+	if err != nil {
+		panic(err)
+	}
 }

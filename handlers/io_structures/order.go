@@ -16,9 +16,12 @@ func NewOrderRequest(body io.ReadCloser) *OrderRequest {
 	return authReq
 }
 
-func (a *OrderRequest) FromJSON(r io.Reader) error {
+func (a *OrderRequest) FromJSON(r io.Reader) {
 	e := json.NewDecoder(r)
-	return e.Decode(a)
+	err := e.Decode(a)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type OrderResponse struct {
@@ -27,11 +30,17 @@ type OrderResponse struct {
 	Currency string  `json:"currency"`
 }
 
-func (a *OrderResponse) ToJSON(w io.Writer) error {
+func (a *OrderResponse) ToJSON(w io.Writer) {
 	e := json.NewEncoder(w)
-	return e.Encode(a)
+	err := e.Encode(a)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func (a *OrderResponse) FromJSON(data []byte) {
-	json.Unmarshal(data, a)
+	err := json.Unmarshal(data, a)
+	if err != nil {
+		panic(err)
+	}
 }

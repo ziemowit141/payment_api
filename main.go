@@ -47,6 +47,12 @@ func main() {
 	sig := <-sigChan
 	log.Println("Graceful shutdown", sig)
 
-	tc, _ := context.WithTimeout(context.Background(), 30*time.Second)
-	server.Shutdown(tc)
+	tc, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+
+	err := server.Shutdown(tc)
+	if err != nil {
+		log.Printf("Error occured during server shuttdown: %s", err)
+		log.Println("Canceling context manually")
+		cancel()
+	}
 }
