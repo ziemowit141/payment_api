@@ -116,3 +116,20 @@ func (s *Session) TransactionNetBalance() float32 {
 
 	return netBalance
 }
+
+func (s *Session) MaxRefundValue() float32 {
+	if s.transaction == nil {
+		panic("unauthorized")
+	}
+	var totalValue float32 = 0.0
+	for _, order := range s.transaction.Captures {
+		totalValue += order.Amount
+	}
+
+	for _, refund := range s.transaction.Refunds {
+		totalValue -= refund.Amount
+	}
+
+	return totalValue
+}
+
