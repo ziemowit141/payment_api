@@ -8,7 +8,7 @@ import (
 
 type Transaction struct {
 	gorm.Model
-	Id               string    `gorm:"primaryKey"`
+	Id               string `gorm:"primaryKey"`
 	Amount           float32
 	Currency         string
 	CreditCardNumber string
