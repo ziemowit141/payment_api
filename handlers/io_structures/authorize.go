@@ -7,6 +7,7 @@ import (
 
 type AuthorizationRequest struct {
 	CreditCardNumber string  `json:"credit_card_number"`
+	Expiry           string  `json:"expiry"`
 	CreditCardCVV    string  `json:"credit_card_cvv"`
 	Amount           float32 `json:"amount"`
 	Currency         string  `json:"base_currency"`

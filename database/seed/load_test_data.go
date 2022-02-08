@@ -1,6 +1,8 @@
 package seed
 
 import (
+	"time"
+
 	"github.com/ziemowit141/payment_api/database/models"
 	"gorm.io/gorm"
 )
@@ -8,6 +10,7 @@ import (
 func LoadTestCreditCards(db *gorm.DB) {
 	creditCard1 := &models.CreditCard{
 		Number:       "5105105105105100",
+		Expiry:       time.Date(2030, time.February, 15, 0, 0, 0, 0, time.UTC),
 		CVV:          "111",
 		Balance:      10000.0,
 		BaseCurrency: "PLN",
@@ -20,6 +23,7 @@ func LoadTestCreditCards(db *gorm.DB) {
 
 	creditCard2 := &models.CreditCard{
 		Number:       "5105105105105101",
+		Expiry:       time.Date(2030, time.February, 15, 0, 0, 0, 0, time.UTC),
 		CVV:          "111",
 		Balance:      10000.0,
 		BaseCurrency: "PLN",
@@ -32,6 +36,7 @@ func LoadTestCreditCards(db *gorm.DB) {
 
 	creditCard3 := &models.CreditCard{
 		Number:       "5105105105105102",
+		Expiry:       time.Date(2030, time.February, 15, 0, 0, 0, 0, time.UTC),
 		CVV:          "111",
 		Balance:      10000.0,
 		BaseCurrency: "PLN",
@@ -44,6 +49,7 @@ func LoadTestCreditCards(db *gorm.DB) {
 
 	creditCard4 := &models.CreditCard{
 		Number:       "5105105105105103",
+		Expiry:       time.Date(2030, time.February, 15, 0, 0, 0, 0, time.UTC),
 		CVV:          "111",
 		Balance:      10000.0,
 		BaseCurrency: "PLN",
@@ -56,6 +62,7 @@ func LoadTestCreditCards(db *gorm.DB) {
 
 	creditCard5 := &models.CreditCard{
 		Number:       "5105105105105120",
+		Expiry:       time.Date(2030, time.February, 15, 0, 0, 0, 0, time.UTC),
 		CVV:          "111",
 		Balance:      10000.0,
 		BaseCurrency: "PLN",

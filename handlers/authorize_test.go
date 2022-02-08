@@ -27,6 +27,7 @@ var _ = Describe("Authorize", func() {
 		authorize = handlers.NewAuthorizeHandler(db)
 		request = &io_structures.AuthorizationRequest{
 			CreditCardNumber: "5105105105105103",
+			Expiry:           "02/30",
 			CreditCardCVV:    "111",
 			Amount:           1000,
 			Currency:         "PLN",
@@ -61,17 +62,36 @@ var _ = Describe("Authorize", func() {
 		BeforeAll(func() {
 			makeRequest()
 		})
-		It("should transaction id", func() {
-			Expect(response.Uid).NotTo(BeEmpty())
-		})
 		It("should return 'SUCCESS' status", func() {
 			Expect(response.Status).To(Equal("SUCCESS"))
+		})
+		It("should transaction id", func() {
+			Expect(response.Uid).NotTo(BeEmpty())
 		})
 		It("should return account balance", func() {
 			Expect(response.Balance).To(Equal(float32(9000)))
 		})
 		It("should return PLN currency", func() {
 			Expect(response.Currency).To(Equal("PLN"))
+		})
+	})
+
+	Context("expired date", Ordered, func() {
+		BeforeAll(func() {
+			request.Expiry = "01/09"
+			makeRequest()
+		})
+		It("should return empty transaction id", func() {
+			Expect(response.Uid).To(BeEmpty())
+		})
+		It("should return 'CARD EXPIRED' status", func() {
+			Expect(response.Status).To(Equal("CARD EXPIRED"))
+		})
+		It("should return zero account balance", func() {
+			Expect(response.Balance).To(BeZero())
+		})
+		It("should return NaN currency", func() {
+			Expect(response.Currency).To(Equal("NaN"))
 		})
 	})
 

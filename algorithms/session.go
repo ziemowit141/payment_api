@@ -2,10 +2,12 @@ package algorithms
 
 import (
 	"log"
+	"time"
 
 	"github.com/ziemowit141/payment_api/database/models"
 	"github.com/ziemowit141/payment_api/database/repositories"
 	"github.com/ziemowit141/payment_api/handlers/io_structures"
+	"github.com/ziemowit141/payment_api/util"
 	"gorm.io/gorm"
 )
 
@@ -36,6 +38,15 @@ func (s *Session) AuthorizeWithCardDetails(ar *io_structures.AuthorizationReques
 
 	if ar.CreditCardCVV != creditCard.CVV {
 		return "WRONG CVV"
+	}
+
+	expiryDate := util.ParseExpiryDate(ar.Expiry)
+	log.Printf("Request expiry date: %s", expiryDate)
+	log.Printf("Card expiry date: %s", creditCard.Expiry)
+	if expiryDate.Before(time.Time(time.Now())) ||
+		expiryDate.Year() != creditCard.Expiry.Year() ||
+		expiryDate.Month() != creditCard.Expiry.Month() {
+		return "CARD EXPIRED"
 	}
 
 	s.creditCard = creditCard

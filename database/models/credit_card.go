@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -11,6 +12,7 @@ import (
 type CreditCard struct {
 	gorm.Model
 	Number       string `gorm:"primaryKey;unique"`
+	Expiry       time.Time
 	CVV          string
 	Balance      float32
 	BaseCurrency string
