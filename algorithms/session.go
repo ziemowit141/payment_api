@@ -27,3 +27,22 @@ func NewSession(db *gorm.DB) *Session {
 		nil,
 		nil}
 }
+
+func (s *Session) AuthorizeWithCardDetails(ar *io_structures.AuthorizationRequest) string {
+	creditCard, err := s.creditCardRepo.SelectCard(ar.CreditCardNumber)
+	if err != nil {
+		return "WRONG CARD NUMBER"
+	}
+
+	if ar.CreditCardCVV != creditCard.CVV {
+		return "WRONG CVV"
+	}
+
+	s.creditCard = creditCard
+
+	if ar.Amount > s.CardNetBalance() {
+		return "UNSUFFICIENT FUNDS"
+	}
+
+	return "SUCCESS"
+}
