@@ -149,3 +149,23 @@ func (s *Session) Refund(amount float32) (string, float32) {
 
 	return "SUCCESS", s.CardNetBalance()
 }
+
+func (s *Session) Capture(amount float32) (string, float32) {
+	if s.transaction == nil {
+		panic("unauthorized")
+	}
+
+	if s.transactionRepo.RefundCount(s.transaction) > 0 {
+		return "REFUND WAS ISSUED - CAPTURES BLOCKED", s.CardNetBalance()
+	}
+
+	if s.TransactionNetBalance() < amount {
+		return "CAPTURE CANT BE LARGER THAN TRANSACTION", s.CardNetBalance()
+	}
+
+	s.captureRepo.NewCapture(amount, s.transaction)
+	s.creditCard.Balance -= amount
+	s.creditCardRepo.UpdateCard(s.creditCard)
+
+	return "SUCCESS", s.CardNetBalance()
+}
