@@ -79,3 +79,28 @@ func (s *Session) CancelTransaction(uid string) {
 	s.transaction = nil
 }
 
+// CardNetBalance or DisplayedBalance follows this equation:
+// DisplayedBalance = balance - transactions - refunds + captures
+func (s *Session) CardNetBalance() float32 {
+	if s.creditCard == nil {
+		panic("unauthorized")
+	}
+	// Hack, refreshes associations - transactions, captures and refunds
+	s.creditCard, _ = s.creditCardRepo.SelectCard(s.creditCard.Number)
+	var netBalance float32 = s.creditCard.Balance
+	for indx_1, transaction := range s.creditCard.Transactions {
+		log.Printf("Transaction nr %d, value: %v", indx_1, transaction.Amount)
+		netBalance -= transaction.Amount
+		for indx_2, capture := range transaction.Captures {
+			log.Printf("Capture nr %d, value: %v", indx_2, capture.Amount)
+			netBalance += capture.Amount
+		}
+
+		for indx_3, refund := range transaction.Refunds {
+			log.Printf("Refund nr %d, value: %v", indx_3, refund.Amount)
+			netBalance -= refund.Amount
+		}
+	}
+
+	return netBalance
+}
