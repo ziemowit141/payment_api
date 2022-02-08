@@ -46,3 +46,20 @@ func (s *Session) AuthorizeWithCardDetails(ar *io_structures.AuthorizationReques
 
 	return "SUCCESS"
 }
+
+func (s *Session) AuthorizeWithTransactionId(uid string) string {
+	transaction := s.transactionRepo.SelectTransaction(uid)
+
+	if transaction == nil {
+		return "WRONG TRANSACTION ID"
+	}
+
+	s.transaction = transaction
+
+	//Should be no errors as transaction must be bound to a CreditCard
+	creditCard, _ := s.creditCardRepo.SelectCard(transaction.CreditCardNumber)
+	s.creditCard = creditCard
+
+	return "SUCCESS"
+}
+
