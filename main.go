@@ -8,11 +8,22 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/ziemowit141/payment_api/database"
+	"github.com/ziemowit141/payment_api/database/seed"
+	"github.com/ziemowit141/payment_api/handlers"
 )
 
 func main() {
 	log.Println("Starting server")
+	db := database.SetupDatabase("myapp")
+	seed.LoadTestCreditCards(db)
+
 	sm := http.NewServeMux()
+	sm.Handle("/authorize", handlers.NewAuthorizeHandler(db))
+	sm.Handle("/void", handlers.NewVoidHandler(db))
+	sm.Handle("/capture", handlers.NewCaptureHandler(db))
+	sm.Handle("/refund", handlers.NewRefundHandler(db))
 
 	server := http.Server{
 		Addr:         ":3000",
