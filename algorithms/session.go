@@ -104,3 +104,15 @@ func (s *Session) CardNetBalance() float32 {
 
 	return netBalance
 }
+
+func (s *Session) TransactionNetBalance() float32 {
+	if s.transaction == nil {
+		panic("unauthorized")
+	}
+	var netBalance float32 = s.transaction.Amount
+	for _, order := range s.transaction.Captures {
+		netBalance -= order.Amount
+	}
+
+	return netBalance
+}
