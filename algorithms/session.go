@@ -63,3 +63,11 @@ func (s *Session) AuthorizeWithTransactionId(uid string) string {
 	return "SUCCESS"
 }
 
+func (s *Session) AddTransaction(amount float32) string {
+	if s.creditCard == nil {
+		panic("unauthorized")
+	}
+	transaction := s.transactionRepo.NewTransaction(amount, s.creditCard)
+	return transaction.Id
+}
+
