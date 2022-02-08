@@ -71,3 +71,11 @@ func (s *Session) AddTransaction(amount float32) string {
 	return transaction.Id
 }
 
+func (s *Session) CancelTransaction(uid string) {
+	if s.transaction == nil {
+		panic("unauthorized")
+	}
+	s.transactionRepo.DeleteTransaction(s.transaction)
+	s.transaction = nil
+}
+
