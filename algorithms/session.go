@@ -133,3 +133,19 @@ func (s *Session) MaxRefundValue() float32 {
 	return totalValue
 }
 
+func (s *Session) Refund(amount float32) (string, float32) {
+	if s.transaction == nil {
+		panic("unauthorized")
+	}
+
+	log.Printf("Amount: %v, Max refund value: %v", amount, s.MaxRefundValue())
+	if amount > s.MaxRefundValue() {
+		return "REFUND CANT BE LARGER THAN CAPTURED VALUE", s.CardNetBalance()
+	}
+
+	s.refundRepo.NewRefund(amount, s.transaction)
+	s.creditCard.Balance += amount
+	s.creditCardRepo.UpdateCard(s.creditCard)
+
+	return "SUCCESS", s.CardNetBalance()
+}
