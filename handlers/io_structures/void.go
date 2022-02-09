@@ -5,8 +5,15 @@ import (
 	"io"
 )
 
+// swagger:model
 type VoidRequest struct {
+	// Required: true
 	Uid string `json:"uid"`
+}
+
+type _ struct {
+	// in: body
+	Body AuthorizationRequest
 }
 
 func (a *VoidRequest) FromJSON(r io.Reader) {
@@ -23,6 +30,7 @@ func NewVoidRequest(body io.ReadCloser) *VoidRequest {
 	return authReq
 }
 
+// swagger:model
 type VoidResponse struct {
 	Status   string  `json:"status"`
 	Balance  float32 `json:"balance"`

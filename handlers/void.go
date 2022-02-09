@@ -16,6 +16,25 @@ func NewVoidHandler(db *gorm.DB) *Void {
 	return &Void{db}
 }
 
+// swagger:route POST /void payment_api void
+//
+// Cancels ongoing transaction without billing
+// the customer
+//
+//	   Consumes:
+//	   - application/json
+//
+//	   Produces:
+//	   - application/json
+//
+//	   Schemes: http
+//
+//	   Deprecated: false
+//
+// 	   Responses:
+//       200: VoidResponse
+//	     400: VoidResponse
+//       401: VoidResponse
 func (v *Void) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	voidReq := io_structures.NewVoidRequest(r.Body)
 	session := algorithms.NewSession(v.db)

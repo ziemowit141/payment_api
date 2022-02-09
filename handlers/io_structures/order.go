@@ -5,9 +5,20 @@ import (
 	"io"
 )
 
+// Capture or Order request for transaction
+// swagger:model
 type OrderRequest struct {
-	TransactionId string  `json:"transaction_id"`
-	Amount        float32 `json:"amount"`
+	// Required: true
+	TransactionId string `json:"transaction_id"`
+
+	// Required: true
+	Amount float32 `json:"amount"`
+}
+
+// swagger:parameters capture refund
+type _ struct {
+	// in: body
+	Body OrderRequest
 }
 
 func NewOrderRequest(body io.ReadCloser) *OrderRequest {
@@ -24,10 +35,16 @@ func (a *OrderRequest) FromJSON(r io.Reader) {
 	}
 }
 
+// swagger:model
 type OrderResponse struct {
-	Status   string  `json:"status"`
-	Balance  float32 `json:"balance"`
-	Currency string  `json:"currency"`
+	// Status of Order Request (Capture or Refund)
+	Status string `json:"status"`
+
+	// Current Account balance
+	Balance float32 `json:"balance"`
+
+	// Currency at account
+	Currency string `json:"currency"`
 }
 
 func (a *OrderResponse) ToJSON(w io.Writer) {

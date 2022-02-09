@@ -1,0 +1,231 @@
+basePath: /
+consumes:
+- application/json
+definitions:
+  AuthorizationRequest:
+    properties:
+      amount:
+        format: float
+        type: number
+        x-go-name: Amount
+      base:
+        type: string
+        x-go-name: Currency
+      credit_card_cvv:
+        type: string
+        x-go-name: CreditCardCVV
+      credit_card_number:
+        type: string
+        x-go-name: CreditCardNumber
+      expiry:
+        type: string
+        x-go-name: Expiry
+    required:
+    - credit_card_number
+    - expiry
+    - credit_card_cvv
+    - amount
+    - base
+    type: object
+    x-go-package: github.com/ziemowit141/payment_api/handlers/io_structures
+  AuthorizationResponse:
+    properties:
+      balance:
+        description: Account balance, empty if unauthorized
+        format: float
+        type: number
+        x-go-name: Balance
+      currency:
+        description: Transaction currency
+        type: string
+        x-go-name: Currency
+      status:
+        description: Status of authorization
+        type: string
+        x-go-name: Status
+      uid:
+        description: Transaction ID, empty if unauthorized
+        type: string
+        x-go-name: Uid
+    type: object
+    x-go-package: github.com/ziemowit141/payment_api/handlers/io_structures
+  OrderRequest:
+    description: Capture or Order request for transaction
+    properties:
+      amount:
+        format: float
+        type: number
+        x-go-name: Amount
+      transaction_id:
+        type: string
+        x-go-name: TransactionId
+    required:
+    - transaction_id
+    - amount
+    type: object
+    x-go-package: github.com/ziemowit141/payment_api/handlers/io_structures
+  OrderResponse:
+    properties:
+      balance:
+        description: Current Account balance
+        format: float
+        type: number
+        x-go-name: Balance
+      currency:
+        description: Currency at account
+        type: string
+        x-go-name: Currency
+      status:
+        description: Status of Order Request (Capture or Refund)
+        type: string
+        x-go-name: Status
+    type: object
+    x-go-package: github.com/ziemowit141/payment_api/handlers/io_structures
+  VoidRequest:
+    properties:
+      uid:
+        type: string
+        x-go-name: Uid
+    required:
+    - uid
+    type: object
+    x-go-package: github.com/ziemowit141/payment_api/handlers/io_structures
+  VoidResponse:
+    properties:
+      balance:
+        format: float
+        type: number
+        x-go-name: Balance
+      currency:
+        type: string
+        x-go-name: Currency
+      status:
+        type: string
+        x-go-name: Status
+    type: object
+    x-go-package: github.com/ziemowit141/payment_api/handlers/io_structures
+info:
+  description: Documentation for payment api
+  title: of Payment API
+  version: 1.0.0
+paths:
+  /authorize:
+    post:
+      consumes:
+      - application/json
+      description: |-
+        Validates passed data and returns
+        transactionId for further transactions
+      operationId: authorize
+      parameters:
+      - in: body
+        name: Body
+        schema:
+          $ref: '#/definitions/AuthorizationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: AuthorizationResponse
+          schema:
+            $ref: '#/definitions/AuthorizationResponse'
+        "400":
+          description: AuthorizationResponse
+          schema:
+            $ref: '#/definitions/AuthorizationResponse'
+        "401":
+          description: AuthorizationResponse
+          schema:
+            $ref: '#/definitions/AuthorizationResponse'
+      schemes:
+      - http
+      tags:
+      - payment_api
+  /capture:
+    post:
+      consumes:
+      - application/json
+      description: |-
+        Evaluates eligibility to capture given
+        amount from customers account and performs
+        this capture if possible
+      operationId: capture
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OrderResponse
+          schema:
+            $ref: '#/definitions/OrderResponse'
+        "400":
+          description: OrderResponse
+          schema:
+            $ref: '#/definitions/OrderResponse'
+        "401":
+          description: OrderResponse
+          schema:
+            $ref: '#/definitions/OrderResponse'
+      schemes:
+      - http
+      tags:
+      - payment_api
+  /refund:
+    post:
+      consumes:
+      - application/json
+      description: |-
+        Evaluates eligibility to capture given
+        amount from customers account and performs
+        this capture if possible
+      operationId: refund
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OrderResponse
+          schema:
+            $ref: '#/definitions/OrderResponse'
+        "400":
+          description: OrderResponse
+          schema:
+            $ref: '#/definitions/OrderResponse'
+        "401":
+          description: OrderResponse
+          schema:
+            $ref: '#/definitions/OrderResponse'
+      schemes:
+      - http
+      tags:
+      - payment_api
+  /void:
+    post:
+      consumes:
+      - application/json
+      description: |-
+        Cancels ongoing transaction without billing
+        the customer
+      operationId: void
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: VoidResponse
+          schema:
+            $ref: '#/definitions/VoidResponse'
+        "400":
+          description: VoidResponse
+          schema:
+            $ref: '#/definitions/VoidResponse'
+        "401":
+          description: VoidResponse
+          schema:
+            $ref: '#/definitions/VoidResponse'
+      schemes:
+      - http
+      tags:
+      - payment_api
+produces:
+- application/json
+schemes:
+- http
+swagger: "2.0"

@@ -1,3 +1,17 @@
+// Package classification of Payment API
+//
+// Documentation for payment api
+//
+//  Schemes: http
+//  BasePath: /
+//  Version: 1.0.0
+//
+//  Consumes:
+//  - application/json
+//
+//  Produces:
+//  - application/json
+// swagger:meta
 package handlers
 
 import (
@@ -24,6 +38,25 @@ func (a *Authorize) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	rw.WriteHeader(http.StatusNotImplemented)
 }
 
+// swagger:route POST /authorize payment_api authorize
+//
+// Validates passed data and returns
+// transactionId for further transactions
+//
+//	   Consumes:
+//	   - application/json
+//
+//	   Produces:
+//	   - application/json
+//
+//	   Schemes: http
+//
+//	   Deprecated: false
+//
+// 	   Responses:
+//       200: AuthorizationResponse
+//       400: AuthorizationResponse
+//       401: AuthorizationResponse
 func (a *Authorize) postAuthorize(rw http.ResponseWriter, r *http.Request) {
 	authReq := io_structures.NewAuthorizationRequest(r.Body)
 	session := algorithms.NewSession(a.db)

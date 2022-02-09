@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	_ "embed"
 	"log"
 	"net/http"
 	"os"
@@ -9,10 +10,15 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/flowchartsman/swaggerui"
+
 	"github.com/ziemowit141/payment_api/database"
 	"github.com/ziemowit141/payment_api/database/seed"
 	"github.com/ziemowit141/payment_api/handlers"
 )
+
+//go:embed swagger.yaml
+var spec []byte
 
 func main() {
 	log.Println("Starting server")
@@ -24,6 +30,8 @@ func main() {
 	sm.Handle("/void", handlers.NewVoidHandler(db))
 	sm.Handle("/capture", handlers.NewCaptureHandler(db))
 	sm.Handle("/refund", handlers.NewRefundHandler(db))
+
+	sm.Handle("/swagger/", http.StripPrefix("/swagger", swaggerui.Handler(spec)))
 
 	server := http.Server{
 		Addr:         ":3000",

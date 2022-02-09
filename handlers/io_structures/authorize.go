@@ -5,12 +5,28 @@ import (
 	"io"
 )
 
+// swagger:model
 type AuthorizationRequest struct {
-	CreditCardNumber string  `json:"credit_card_number"`
-	Expiry           string  `json:"expiry"`
-	CreditCardCVV    string  `json:"credit_card_cvv"`
-	Amount           float32 `json:"amount"`
-	Currency         string  `json:"base_currency"`
+	// Required: true
+	CreditCardNumber string `json:"credit_card_number" validate:"required"`
+
+	// Required: true
+	Expiry string `json:"expiry" validate:"required"`
+
+	// Required: true
+	CreditCardCVV string `json:"credit_card_cvv" validate:"required"`
+
+	// Required: true
+	Amount float32 `json:"amount" validate:"required"`
+
+	// Required: true
+	Currency string `json:"base" validate:"required"`
+}
+
+// swagger:parameters authorize
+type _ struct {
+	// in: body
+	Body AuthorizationRequest
 }
 
 func NewAuthorizationRequest(body io.ReadCloser) *AuthorizationRequest {
@@ -28,11 +44,19 @@ func (a *AuthorizationRequest) FromJSON(r io.Reader) error {
 	return e.Decode(a)
 }
 
+// swagger:model
 type AuthorizationResponse struct {
-	Uid      string  `json:"uid"`
-	Status   string  `json:"status"`
-	Balance  float32 `json:"balance"`
-	Currency string  `json:"currency"`
+	// Transaction ID, empty if unauthorized
+	Uid string `json:"uid"`
+
+	// Status of authorization
+	Status string `json:"status"`
+
+	// Account balance, empty if unauthorized
+	Balance float32 `json:"balance"`
+
+	// Transaction currency
+	Currency string `json:"currency"`
 }
 
 func (a *AuthorizationResponse) ToJSON(w io.Writer) {
