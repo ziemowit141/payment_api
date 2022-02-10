@@ -44,6 +44,7 @@ func (c *Refund) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 //       200: OrderResponse
 //	     400: OrderResponse
 //		 401: OrderResponse
+//       501: description:NotImplemented
 func (c *Refund) postRefund(rw http.ResponseWriter, r *http.Request) {
 	refundReq := io_structures.NewOrderRequest(r.Body)
 	session := algorithms.NewSession(c.db)

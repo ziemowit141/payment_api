@@ -44,6 +44,7 @@ func (c *Capture) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 //       200: OrderResponse
 //	     400: OrderResponse
 // 		 401: OrderResponse
+//       501: description:NotImplemented
 func (c *Capture) postCapture(rw http.ResponseWriter, r *http.Request) {
 	captureReq := io_structures.NewOrderRequest(r.Body)
 	session := algorithms.NewSession(c.db)

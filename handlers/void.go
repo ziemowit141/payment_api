@@ -16,6 +16,14 @@ func NewVoidHandler(db *gorm.DB) *Void {
 	return &Void{db}
 }
 
+func (v *Void) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
+		v.postVoid(rw, r)
+	}
+
+	rw.WriteHeader(http.StatusNotImplemented)
+}
+
 // swagger:route POST /void payment_api void
 //
 // Cancels ongoing transaction without billing
@@ -35,7 +43,8 @@ func NewVoidHandler(db *gorm.DB) *Void {
 //       200: VoidResponse
 //	     400: VoidResponse
 //       401: VoidResponse
-func (v *Void) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
+//       501: description:NotImplemented
+func (v *Void) postVoid(rw http.ResponseWriter, r *http.Request) {
 	voidReq := io_structures.NewVoidRequest(r.Body)
 	session := algorithms.NewSession(v.db)
 
@@ -47,6 +56,7 @@ func (v *Void) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 			Currency: "NaN",
 		}
 		voidRes.ToJSON(rw)
+		rw.WriteHeader(http.StatusNotImplemented)
 		return
 	}
 

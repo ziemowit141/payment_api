@@ -20,7 +20,7 @@ type AuthorizationRequest struct {
 	Amount float32 `json:"amount" validate:"required"`
 
 	// Required: true
-	Currency string `json:"base" validate:"required"`
+	Currency string `json:"currency" validate:"required"`
 }
 
 // swagger:parameters authorize

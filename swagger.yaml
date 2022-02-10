@@ -8,15 +8,15 @@ definitions:
         format: float
         type: number
         x-go-name: Amount
-      base:
-        type: string
-        x-go-name: Currency
       credit_card_cvv:
         type: string
         x-go-name: CreditCardCVV
       credit_card_number:
         type: string
         x-go-name: CreditCardNumber
+      currency:
+        type: string
+        x-go-name: Currency
       expiry:
         type: string
         x-go-name: Expiry
@@ -25,7 +25,7 @@ definitions:
     - expiry
     - credit_card_cvv
     - amount
-    - base
+    - currency
     type: object
     x-go-package: github.com/ziemowit141/payment_api/handlers/io_structures
   AuthorizationResponse:
@@ -137,6 +137,8 @@ paths:
           description: AuthorizationResponse
           schema:
             $ref: '#/definitions/AuthorizationResponse'
+        "501":
+          description: NotImplemented
       schemes:
       - http
       tags:
@@ -165,6 +167,8 @@ paths:
           description: OrderResponse
           schema:
             $ref: '#/definitions/OrderResponse'
+        "501":
+          description: NotImplemented
       schemes:
       - http
       tags:
@@ -193,6 +197,8 @@ paths:
           description: OrderResponse
           schema:
             $ref: '#/definitions/OrderResponse'
+        "501":
+          description: NotImplemented
       schemes:
       - http
       tags:
@@ -220,6 +226,8 @@ paths:
           description: VoidResponse
           schema:
             $ref: '#/definitions/VoidResponse'
+        "501":
+          description: NotImplemented
       schemes:
       - http
       tags:

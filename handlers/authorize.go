@@ -57,6 +57,7 @@ func (a *Authorize) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 //       200: AuthorizationResponse
 //       400: AuthorizationResponse
 //       401: AuthorizationResponse
+//       501: description:NotImplemented
 func (a *Authorize) postAuthorize(rw http.ResponseWriter, r *http.Request) {
 	authReq := io_structures.NewAuthorizationRequest(r.Body)
 	session := algorithms.NewSession(a.db)
