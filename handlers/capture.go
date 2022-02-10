@@ -56,6 +56,7 @@ func (c *Capture) postCapture(rw http.ResponseWriter, r *http.Request) {
 			Balance:  0.0,
 			Currency: "NaN",
 		}
+		rw.WriteHeader(http.StatusUnauthorized)
 		voidRes.ToJSON(rw)
 		return
 	}
@@ -66,6 +67,10 @@ func (c *Capture) postCapture(rw http.ResponseWriter, r *http.Request) {
 		Status:   status,
 		Balance:  balance,
 		Currency: "PLN"}
+
+	if status != "SUCCESS" {
+		rw.WriteHeader(http.StatusBadRequest)
+	}
 
 	captureRes.ToJSON(rw)
 }

@@ -218,10 +218,6 @@ paths:
           description: VoidResponse
           schema:
             $ref: '#/definitions/VoidResponse'
-        "400":
-          description: VoidResponse
-          schema:
-            $ref: '#/definitions/VoidResponse'
         "401":
           description: VoidResponse
           schema:

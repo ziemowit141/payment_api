@@ -41,7 +41,6 @@ func (v *Void) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 //
 // 	   Responses:
 //       200: VoidResponse
-//	     400: VoidResponse
 //       401: VoidResponse
 //       501: description:NotImplemented
 func (v *Void) postVoid(rw http.ResponseWriter, r *http.Request) {
@@ -56,7 +55,7 @@ func (v *Void) postVoid(rw http.ResponseWriter, r *http.Request) {
 			Currency: "NaN",
 		}
 		voidRes.ToJSON(rw)
-		rw.WriteHeader(http.StatusNotImplemented)
+		rw.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 

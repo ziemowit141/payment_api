@@ -69,6 +69,11 @@ func (a *Authorize) postAuthorize(rw http.ResponseWriter, r *http.Request) {
 			Status:   status,
 			Balance:  0.0,
 			Currency: "NaN"}
+		if status == "UNSUFFICIENT FUNDS" {
+			rw.WriteHeader(http.StatusBadRequest)
+		} else {
+			rw.WriteHeader(http.StatusUnauthorized)
+		}
 		authRes.ToJSON(rw)
 		return
 	}
