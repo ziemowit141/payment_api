@@ -24,6 +24,7 @@ func SetupDatabase(name string) *gorm.DB {
 		panic(err)
 	}
 
+	DropSchema(db)
 	createSchema(db)
 
 	return db
