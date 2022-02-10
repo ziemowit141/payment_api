@@ -14,7 +14,7 @@ type VoidRequest struct {
 // swagger:parameters void
 type VoidRequestWrapper struct {
 	// in: body
-	Body AuthorizationRequest
+	Body VoidRequest
 }
 
 func (a *VoidRequest) FromJSON(r io.Reader) {

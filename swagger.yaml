@@ -224,7 +224,7 @@ paths:
       - in: body
         name: Body
         schema:
-          $ref: '#/definitions/AuthorizationRequest'
+          $ref: '#/definitions/VoidRequest'
       produces:
       - application/json
       responses:
