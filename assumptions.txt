@@ -1,2 +1,0 @@
-1. Should we subtract pending transactions value, when checking balance for authorization?
-Yes because, we do not want to allow for infinite amount of transactions.
