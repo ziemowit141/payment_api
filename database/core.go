@@ -74,7 +74,7 @@ func DropSchema(db *gorm.DB) {
 }
 
 func NewTestDb() *gorm.DB {
-	db := SetupDatabase("test")
+	db := SetupDatabase("myapp")
 	seed.LoadTestCreditCards(db)
 	seed.LoadTestTransaciton(db)
 
