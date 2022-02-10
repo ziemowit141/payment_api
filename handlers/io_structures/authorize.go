@@ -24,7 +24,7 @@ type AuthorizationRequest struct {
 }
 
 // swagger:parameters authorize
-type _ struct {
+type AuthorizationRequestWrapper struct {
 	// in: body
 	Body AuthorizationRequest
 }

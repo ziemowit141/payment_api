@@ -50,7 +50,6 @@ definitions:
     type: object
     x-go-package: github.com/ziemowit141/payment_api/handlers/io_structures
   OrderRequest:
-    description: Capture or Order request for transaction
     properties:
       amount:
         format: float
@@ -152,6 +151,11 @@ paths:
         amount from customers account and performs
         this capture if possible
       operationId: capture
+      parameters:
+      - in: body
+        name: Body
+        schema:
+          $ref: '#/definitions/OrderRequest'
       produces:
       - application/json
       responses:
@@ -182,6 +186,11 @@ paths:
         amount from customers account and performs
         this capture if possible
       operationId: refund
+      parameters:
+      - in: body
+        name: Body
+        schema:
+          $ref: '#/definitions/OrderRequest'
       produces:
       - application/json
       responses:
@@ -211,6 +220,11 @@ paths:
         Cancels ongoing transaction without billing
         the customer
       operationId: void
+      parameters:
+      - in: body
+        name: Body
+        schema:
+          $ref: '#/definitions/AuthorizationRequest'
       produces:
       - application/json
       responses:

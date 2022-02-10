@@ -11,7 +11,8 @@ type VoidRequest struct {
 	Uid string `json:"uid"`
 }
 
-type _ struct {
+// swagger:parameters void
+type VoidRequestWrapper struct {
 	// in: body
 	Body AuthorizationRequest
 }

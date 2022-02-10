@@ -5,7 +5,6 @@ import (
 	"io"
 )
 
-// Capture or Order request for transaction
 // swagger:model
 type OrderRequest struct {
 	// Required: true
@@ -16,7 +15,7 @@ type OrderRequest struct {
 }
 
 // swagger:parameters capture refund
-type _ struct {
+type OrderRequestWrapper struct {
 	// in: body
 	Body OrderRequest
 }
