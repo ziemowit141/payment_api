@@ -1,5 +1,5 @@
 # payment_api
-Application that will allow a merchant to offer a way for their shoppers to pay for their product.
+An application that will allow a merchant to offer a way for their shoppers to pay for their product.
 
 It simulates the following payment flow:
 - A merchant requests an authorisation through the /authorize call. This call contains
@@ -15,14 +15,14 @@ multiple times with an amount that should not be superior to the amount authoris
 - The /refund call will refund the money taken from the customer bank account. It can be also called multiple times with an amount that can not be superior to the captured amount. For example, a 10£ authorisation, with a 5£ capture, can only be refunded of 5£. Once a refund has occurred, a capture cannot be made on the specific transaction.
 
 ## Important assumptions
-Main concern for this implementation was to how display a account balance to a user. I believe there should be distinction
-between displayed account balance, and actual account balance, because after the transaction is authorized, money are not yet captured.
+The main concern for this implementation was how to display an account balance to a user. I believe there should be a distinction
+between displayed account balance and actual account balance, because after the transaction is authorized, money is not yet captured.
 
-To complete the implementation I have made following assumptions:
-- Any authorized transaction is blocking that amount from account balance. 
+To complete the implementation I have made the following assumptions:
+- Any authorized transaction is blocking that amount from the account balance. 
 
 
-**Reason:** Without subtracting authorized transaction from account balance, we could create infinite ammount of transactions. I believe it is not very realistic. I assume authorizing a transaction behaves similarly to blocking that amount of money on the account.
+**Reason:** Without subtracting authorized transactions from the account balance, we could create an infinite amount of transactions. I believe it is not very realistic. I assume authorizing a transaction behaves similarly to blocking that amount of money on the account.
 
 - Actual account balance is modified only by `capture` and `refund` methods.
 
@@ -49,24 +49,21 @@ We are adding Captures and subtracting Refunds to nullify their effect on displa
     ActualBalance: 9000PLN, DisplayedBalance: 7000PLN
 ## Running the application
 
-Preffered way to quickly start the app is through the Makefile
-
-
-
+Preferred way to quickly start the app is through the Makefile
 
     make quicksetup
 
-It will:
+**It will:**
 1. Run Postgres in docker container hosting on port `5432`
-2. Compile and run payment_api server, hosting on `localhost:3000`git s
+2. Compile and run payment_api server, hosting on `localhost:3000`
 
 ## Documentation
-After creating quicksetup I advice to get familiar with `swagger.yaml`, which contains description of the API
+After creating quick-setup I advice to get familiar with `swagger.yaml`, which contains a description of the API
 
-Most convinient way would be to open `localhost:3000/swagger` where Swagger UI is hosted for maximum convinience
+The most convenient way would be to open `localhost:3000/swagger` where Swagger UI is hosted.
 
 ## Tests
-Next good step to get familiar with the payment_api would be to read created testcases. They are written using Ginkgo
+The next good step to get familiar with the payment_api would be to read created test cases. They are written using Ginkgo
 framework which is very descriptive in its nature, therefore informative for the reader.
 
 All tests are located in `/handlers` directory
