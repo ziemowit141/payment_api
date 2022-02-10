@@ -1,7 +1,6 @@
 package algorithms
 
 import (
-	"log"
 	"time"
 
 	"github.com/ziemowit141/payment_api/database/models"
@@ -41,8 +40,6 @@ func (s *Session) AuthorizeWithCardDetails(ar *io_structures.AuthorizationReques
 	}
 
 	expiryDate := util.ParseExpiryDate(ar.Expiry)
-	log.Printf("Request expiry date: %s", expiryDate)
-	log.Printf("Card expiry date: %s", creditCard.Expiry)
 	if expiryDate.Before(time.Time(time.Now())) ||
 		expiryDate.Year() != creditCard.Expiry.Year() ||
 		expiryDate.Month() != creditCard.Expiry.Month() {
@@ -99,16 +96,12 @@ func (s *Session) CardNetBalance() float32 {
 	// Hack, refreshes associations - transactions, captures and refunds
 	s.creditCard, _ = s.creditCardRepo.SelectCard(s.creditCard.Number)
 	var netBalance float32 = s.creditCard.Balance
-	for indx_1, transaction := range s.creditCard.Transactions {
-		log.Printf("Transaction nr %d, value: %v", indx_1, transaction.Amount)
+	for _, transaction := range s.creditCard.Transactions {
 		netBalance -= transaction.Amount
-		for indx_2, capture := range transaction.Captures {
-			log.Printf("Capture nr %d, value: %v", indx_2, capture.Amount)
+		for _, capture := range transaction.Captures {
 			netBalance += capture.Amount
 		}
-
-		for indx_3, refund := range transaction.Refunds {
-			log.Printf("Refund nr %d, value: %v", indx_3, refund.Amount)
+		for _, refund := range transaction.Refunds {
 			netBalance -= refund.Amount
 		}
 	}
@@ -149,7 +142,6 @@ func (s *Session) Refund(amount float32) (string, float32) {
 		panic("unauthorized")
 	}
 
-	log.Printf("Amount: %v, Max refund value: %v", amount, s.MaxRefundValue())
 	if amount > s.MaxRefundValue() {
 		return "REFUND CANT BE LARGER THAN CAPTURED VALUE", s.CardNetBalance()
 	}
